@@ -10,6 +10,7 @@ class Invoice
     producer_info
     consumer_info
     line_items
+    bottom_message
   end
 
   def title
@@ -18,7 +19,8 @@ class Invoice
   end
 
   def producer_info
-    text "#{@job[:provider][:first_name]} #{@job[:provider][:last_name]}"
+    text "Provider: #{@job[:provider][:first_name]} #{@job[:provider][:last_name]}"
+    text "Provider ##{@job[:provider][:id]}"
     move_down 10
     text "Lawn Ninja"
     text "405 N Madison Ave"
@@ -39,12 +41,19 @@ class Invoice
     company_cut = "$5.00"
     total = "$25.00"
     table([
-      ["Item Description", "Amount"],
-      ["Lawn Care", provider_cut],
-      ["Fees", company_cut],
-      ["", "  "],
-      ["Total", total]
+      ["Item Description", "Amount", "Paid"],
+      ["Lawn Care", provider_cut, "Credit ####-####-####-0001"],
+      ["Fees", company_cut, "Credit ####-####-####-0001"],
+      ["", "  ", ""],
+      ["Total", total, "Paid in Full"]
     ], :width => 500)
+    move_down 20
+  end
+
+  def bottom_message
+    text "For questions about this invoice, please visit www.lawnninja.com or call (262) 313-8767.", align: :center, size: 11
+    move_down 20
+    text "Thank you for choosing Lawn Ninja!", align: :center, style: :bold
   end
 end
 
