@@ -1,4 +1,5 @@
 require "prawn"
+require_relative "prawn-table.rb"
 
 class Invoice
   include Prawn::View
@@ -8,6 +9,7 @@ class Invoice
     title
     producer_info
     consumer_info
+    line_items
   end
 
   def title
@@ -29,6 +31,20 @@ class Invoice
     text "#{@job[:consumer][:first_name]} #{@job[:consumer][:last_name]}"
     text "#{@job[:consumer][:address]}"
     text "#{@job[:consumer][:city]}, #{@job[:consumer][:state]} #{@job[:consumer][:zip_code]}"
+    move_down 20
+  end
+
+  def line_items
+    provider_cut = "$20.00"
+    company_cut = "$5.00"
+    total = "$25.00"
+    table([
+      ["Item Description", "Amount"],
+      ["Lawn Care", provider_cut],
+      ["Fees", company_cut],
+      ["", "  "],
+      ["Total", total]
+    ], :width => 500)
   end
 end
 
